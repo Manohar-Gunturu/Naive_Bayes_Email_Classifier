@@ -52,15 +52,15 @@ def calc_score(fileName, Vocabulary):
     ham_tmp = score_of_ham
     spam_tmp = score_of_spam
     with open(fileName, encoding='latin-1') as file_handle:
-        entries = file_handle.readlines()
-        for line in entries:
-            line2 = re.split('[^a-zA-Z]', line.lower())
-            for word in line2:
-                if word in Vocabulary.keys():
-                    ham_tmp += math.log2(Vocabulary[word][1])
-                    spam_tmp += math.log2(Vocabulary[word][3])
-                else:
-                    pass
+        entries = file_handle.read()
+        line2 = re.split('[^a-zA-Z]', entries)
+        for word in line2:
+            word = word.lower().strip()
+            if word in Vocabulary.keys():
+                ham_tmp += math.log2(Vocabulary[word][1])
+                spam_tmp += math.log2(Vocabulary[word][3])
+            else:
+                pass
 
     return ham_tmp, spam_tmp
 
@@ -82,6 +82,7 @@ def classify(filenameList, Vocabulary, writeFile):
             if decision == 'wrong': performance = performance + 1
             solo_writer.write(fileName + "  spam  " + str(ham_score) + "  " + str(spam_score)+ "  " + category +"  "+ decision)
 
+    print("total ",len(filenameList)," wrong classified", performance)
     return (len(filenameList)-performance)/len(filenameList)
 
 
