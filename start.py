@@ -63,7 +63,7 @@ print("spam vocabulary size ", len(spam_size_words.vocabulary))
 Vocabulary3 = model_builder.build(ham_size_words,spam_size_words)
 model_builder.Printer(Vocabulary3,"wordlength-model.txt")
 performance = model_builder.classify(testList, Vocabulary3,"wordlength-result.txt")
-print("Performance", performance)
+print(" Accuracy", performance)
 
 
 print("----------------- exp 4 --------------")
@@ -129,6 +129,14 @@ for freq in freq_list:
     performance = model_builder.classify(testList, Vocabulary2, "freq-perc-result.txt")
     print("Accuracy", performance)
 
+delta_ham = copy.deepcopy(ham)
+delta_spam = copy.deepcopy(spam)
+tj = input("enter  delta smoothing value")
+
+Vocabulary2 = model_builder.build(ham_stop_words, spam_stop_words)
+model_builder.Printer(Vocabulary2, "demo-model-exp5.txt")
+performance = model_builder.classify(testList, Vocabulary2, "demo-result-exp5.txt")
+print("Accuracy", performance)
 
 
 
