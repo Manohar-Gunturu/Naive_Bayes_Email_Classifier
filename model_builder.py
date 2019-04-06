@@ -2,11 +2,11 @@ import solo_writer
 import math, re
 
 
-def smoothFrequemcy(email, key, numWord, flag):
+def smoothFrequemcy(email, key, numWord, flag, val=0.5):
     if (flag == True):
-        result = (email.vocabulary[key] + 0.5) / (email.num + numWord * 0.5)
+        result = (email.vocabulary[key] + val) / (email.num + numWord * val)
     else:
-        result = 0.5 / (email.num + numWord * 0.5)
+        result = val / (email.num + numWord * val)
     return result
 
 
@@ -20,20 +20,20 @@ def Printer(Vocabulary, filename):
             i = i + 1
 
 
-def build(ham, spam):
+def build(ham, spam, val=0.5):
     Vocabulary = {**ham.vocabulary, **spam.vocabulary}
     hamVocabulary = ham.vocabulary
     spamVocabulary = spam.vocabulary
     for key in Vocabulary.keys():
         if (key in hamVocabulary.keys()) & (key in spamVocabulary.keys()):
-            Vocabulary[key] = [str(hamVocabulary[key]), smoothFrequemcy(ham, key, ham.num, True), str(spamVocabulary[key]),
-                               smoothFrequemcy(spam, key, spam.num, True)]
+            Vocabulary[key] = [str(hamVocabulary[key]), smoothFrequemcy(ham, key, ham.num, True, val), str(spamVocabulary[key]),
+                               smoothFrequemcy(spam, key, spam.num, True, val)]
         elif (key in hamVocabulary.keys()) & (key not in spamVocabulary.keys()):
-            Vocabulary[key] = [str(hamVocabulary[key]), smoothFrequemcy(ham, key, ham.num, True), '0.5',
-                               smoothFrequemcy(spam, key, spam.num, False)]
+            Vocabulary[key] = [str(hamVocabulary[key]), smoothFrequemcy(ham, key, ham.num, True, val), str(val),
+                               smoothFrequemcy(spam, key, spam.num, False, val)]
         else:
-            Vocabulary[key] = ['0.5', smoothFrequemcy(ham, key, ham.num, False), str(spamVocabulary[key]),
-                               smoothFrequemcy(spam, key, spam.num, True)]
+            Vocabulary[key] = [str(val), smoothFrequemcy(ham, key, ham.num, False, val), str(spamVocabulary[key]),
+                               smoothFrequemcy(spam, key, spam.num, True, val)]
 
     return Vocabulary
 

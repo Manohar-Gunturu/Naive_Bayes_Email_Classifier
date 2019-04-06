@@ -133,16 +133,7 @@ delta_ham = copy.deepcopy(ham)
 delta_spam = copy.deepcopy(spam)
 tj = input("enter  delta smoothing value")
 
-Vocabulary2 = model_builder.build(ham_stop_words, spam_stop_words)
+Vocabulary2 = model_builder.build(ham_stop_words, spam_stop_words, tj)
 model_builder.Printer(Vocabulary2, "demo-model-exp5.txt")
 performance = model_builder.classify(testList, Vocabulary2, "demo-result-exp5.txt")
 print("Accuracy", performance)
-
-
-
-
-
-
-
-
-
